@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>인권 격차 카드</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=IBM+Plex+Sans+KR:wght@400;500;600&display=swap">
+<style>
+/* Layout: 3×2 deck of solid color tiles with one huge numeral each; a tile turns over in place into a reading card. */
+:root {
+  --bg: #f8f6fb;
+  --surface: #ffffff;
+  --fg: #2a2d3e;
+  --muted: #6a6f85;
+  --line: #e2dfec;
+  --paper: #fffdf8; /* light highlight used only on top of the pastel fills */
+  --blue: #bcd6f7;   --on-blue: #1f3a66;
+  --green: #c2e8d2;  --on-green: #1d4d36;
+  --yellow: #f9ebad; --on-yellow: #5a4a0a;
+  --red: #f8c9cb;    --on-red: #6b2528;
+  --orange: #fbd6b5; --on-orange: #6a3a12;
+  --purple: #dccdf5; --on-purple: #3f2a70;
+  --display: "Black Han Sans", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+  --body: "IBM Plex Sans KR", "Apple SD Gothic Neo", "Malgun Gothic", sans-serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #191a24; --surface: #232533; --fg: #eeeef6; --muted: #a8acc0; --line: #3a3d50;
+  --blue: #a9c6ee; --green: #addcc1; --yellow: #eedd98; --red: #efb5b8; --orange: #f1c49e; --purple: #cbb9ec;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #191a24; --surface: #232533; --fg: #eeeef6; --muted: #a8acc0; --line: #3a3d50;
+  --blue: #a9c6ee; --green: #addcc1; --yellow: #eedd98; --red: #efb5b8; --orange: #f1c49e; --purple: #cbb9ec;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+img { max-width: 100%; }
+body { margin: 0; }
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--body); font-size: 16px; line-height: 1.7;
+  padding-block: 32px 48px; padding-inline: 16px;
+}
+.wrap { max-width: 1120px; margin-inline: auto; display: flex; flex-direction: column; gap: 24px; }
+header { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; }
+h1 { font-family: var(--display); font-weight: 400; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin: 0; text-wrap: balance; }
+.lead { margin: 6px 0 0; color: var(--muted); }
+.reset {
+  font: 500 0.95rem var(--body); color: var(--fg); background: var(--surface);
+  border: 1px solid var(--line); border-radius: 999px; padding: 8px 18px; cursor: pointer;
+}
+.reset:hover { border-color: var(--fg); }
+.deck { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .deck { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 540px) { .deck { grid-template-columns: minmax(0, 1fr); } }
+.card { min-width: 0; perspective: 1200px; }
+.front {
+  display: grid; place-items: center; width: 100%; min-height: 260px;
+  background: var(--c); color: var(--on); border: 0; border-radius: 20px; cursor: pointer;
+  font-family: var(--display); font-size: clamp(6rem, 14vw, 9rem); line-height: 1;
+  transition: transform .15s ease;
+}
+.front:hover { transform: translateY(-4px); }
+@media (max-width: 540px) { .front { min-height: 150px; } }
+.back {
+  background: var(--surface); border: 2px solid var(--c); border-radius: 20px;
+  padding: 20px; display: flex; flex-direction: column; gap: 14px;
+  animation: turn .35s ease;
+}
+@keyframes turn { from { transform: rotateY(90deg); opacity: .4; } to { transform: none; opacity: 1; } }
+.back-head { display: flex; align-items: center; gap: 12px; }
+.num {
+  flex: none; width: 44px; height: 44px; border-radius: 12px; display: grid; place-items: center;
+  background: var(--c); color: var(--on); font-family: var(--display); font-size: 1.6rem; line-height: 1;
+}
+h2 { font-size: 1.2rem; font-weight: 600; line-height: 1.35; margin: 0; min-width: 0; text-wrap: balance; }
+.ill { margin: 0; display: flex; flex-direction: column; gap: 6px; }
+.ill svg { display: block; width: 100%; height: auto; background: var(--c); color: var(--on); border-radius: 12px; }
+.ill figcaption { font-size: 0.82rem; color: var(--muted); }
+.k { fill: currentColor; } .k7 { fill: currentColor; opacity: .75; } .k5 { fill: currentColor; opacity: .5; } .k2 { fill: currentColor; opacity: .18; }
+.p { fill: var(--paper); } .p6 { fill: var(--paper); opacity: .6; }
+.s { fill: none; stroke: currentColor; stroke-width: 4; stroke-linecap: round; stroke-linejoin: round; }
+.sp { fill: none; stroke: var(--paper); stroke-width: 2.5; stroke-linecap: round; }
+.back p { margin: 0; }
+dl { margin: 0; display: flex; flex-direction: column; gap: 10px; border-top: 1px solid var(--line); padding-top: 14px; }
+dt { font-size: 0.78rem; font-weight: 600; letter-spacing: .06em; color: var(--muted); }
+dd { margin: 0; font-size: 0.93rem; line-height: 1.55; overflow-wrap: anywhere; }
+.close {
+  align-self: flex-end; font: 500 0.9rem var(--body); color: var(--fg); background: transparent;
+  border: 1px solid var(--line); border-radius: 999px; padding: 6px 16px; cursor: pointer;
+}
+.close:hover { border-color: var(--fg); }
+button:focus-visible { outline: 3px solid var(--fg); outline-offset: 3px; }
+footer { color: var(--muted); font-size: 0.88rem; }
+@media (prefers-reduced-motion: reduce) { .back { animation: none; } .front { transition: none; } }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <div>
+      <h1>인권 격차 카드</h1>
+      <p class="lead">번호를 누르면 카드가 뒤집히고 자료가 나옵니다.</p>
+    </div>
+    <button class="reset" id="reset-all" type="button">모두 덮기</button>
+  </header>
+
+  <main class="deck" id="deck">
+
+    <article class="card" style="--c:var(--blue);--on:var(--on-blue)">
+      <button class="front" id="front-1" type="button" aria-label="카드 1 열기">1</button>
+      <div class="back" hidden>
+        <div class="back-head"><span class="num">1</span><h2>아동 노동</h2></div>
+        <figure class="ill"><svg viewBox="0 0 320 160" role="img" aria-label="공장에서 일하는 아동들 그림">
+<rect class="k2" x="0" y="118" width="320" height="42"/>
+<rect class="p6" x="24" y="20" width="70" height="44" rx="4"/><path class="s" style="stroke-width:2;opacity:.35" d="M59 20V64M24 42H94"/>
+<path class="s" style="stroke-width:2" d="M230 0V24"/><path class="k7" d="M222 24h16l8 16h-32z"/>
+<circle class="k" cx="115" cy="62" r="9"/><rect class="k7" x="104" y="72" width="22" height="30" rx="8"/>
+<circle class="k" cx="195" cy="66" r="8"/><rect class="k7" x="185" y="75" width="20" height="27" rx="8"/>
+<rect class="p" x="70" y="78" width="22" height="18" rx="2"/><rect class="p" x="150" y="78" width="22" height="18" rx="2"/><rect class="p" x="228" y="78" width="22" height="18" rx="2"/>
+<rect class="k" x="40" y="96" width="250" height="14" rx="7"/>
+<circle class="p" cx="58" cy="103" r="3"/><circle class="p" cx="104" cy="103" r="3"/><circle class="p" cx="150" cy="103" r="3"/><circle class="p" cx="196" cy="103" r="3"/><circle class="p" cx="242" cy="103" r="3"/><circle class="p" cx="274" cy="103" r="3"/>
+<rect class="k" x="62" y="110" width="6" height="24"/><rect class="k" x="262" y="110" width="6" height="24"/>
+        </svg><figcaption>공장에서 일하는 아동들</figcaption></figure>
+        <p>2024년 기준으로 전 세계 아동 약 1억 3,800만 명이 노동을 하고 있습니다. 이 가운데 약 5,400만 명은 건강과 안전을 해칠 수 있는 위험한 일을 합니다. 사하라 이남 아프리카에만 약 8,700만 명이 있어 전체의 3분의 2에 가깝습니다. 2020년의 1억 6천만 명보다 2,200만 명 넘게 줄었지만, 2025년까지 아동 노동을 없애겠다는 국제 사회의 목표는 이루지 못했습니다.</p>
+        <dl>
+          <div><dt>키워드</dt><dd>아동 노동</dd></div>
+          <div><dt>출처</dt><dd>ILO·UNICEF, 「Child Labour: Global estimates 2024, trends and the road forward」 (2025)</dd></div>
+        </dl>
+        <button class="close" type="button">덮기</button>
+      </div>
+    </article>
+
+    <article class="card" style="--c:var(--green);--on:var(--on-green)">
+      <button class="front" id="front-2" type="button" aria-label="카드 2 열기">2</button>
+      <div class="back" hidden>
+        <div class="back-head"><span class="num">2</span><h2>난민 아동 교육권</h2></div>
+        <figure class="ill"><svg viewBox="0 0 320 160" role="img" aria-label="천막 교실에서 공부하는 난민 아동들 그림">
+<path class="p6" d="M6 130L160 10L314 130Z"/><rect class="k2" x="0" y="130" width="320" height="30"/>
+<rect class="k" x="168" y="66" width="54" height="34" rx="3"/><path class="sp" d="M176 78H206M176 88H196"/>
+<path class="s" style="stroke-width:3" d="M176 100L172 130M214 100L218 130"/>
+<circle class="k" cx="238" cy="88" r="8"/><rect class="k7" x="229" y="97" width="18" height="34" rx="8"/>
+<circle class="k" cx="70" cy="106" r="8"/><rect class="k7" x="60" y="115" width="20" height="17" rx="8"/>
+<circle class="k" cx="100" cy="106" r="8"/><rect class="k7" x="90" y="115" width="20" height="17" rx="8"/>
+<circle class="k" cx="130" cy="106" r="8"/><rect class="k7" x="120" y="115" width="20" height="17" rx="8"/>
+        </svg><figcaption>천막 교실에서 공부하는 난민 아동들</figcaption></figure>
+        <p>전쟁과 분쟁으로 고향을 떠난 학령기 난민 아동은 전 세계에 1,480만 명입니다. 그중 절반이 넘는 700만 명 이상(51%)이 학교에 다니지 못하고 있습니다. 유엔난민기구는 난민 아동이 머무는 나라의 학생들과 같은 권리로 그 나라 학교에서 배울 수 있어야 한다고 강조합니다.</p>
+        <dl>
+          <div><dt>키워드</dt><dd>난민 아동 교육권</dd></div>
+          <div><dt>출처</dt><dd>UNHCR, 「Unlocking Potential: The Right to Education and Opportunity」 (2023 난민 교육 보고서)</dd></div>
+        </dl>
+        <button class="close" type="button">덮기</button>
+      </div>
+    </article>
+
+    <article class="card" style="--c:var(--yellow);--on:var(--on-yellow)">
+      <button class="front" id="front-3" type="button" aria-label="카드 3 열기">3</button>
+      <div class="back" hidden>
+        <div class="back-head"><span class="num">3</span><h2>성평등과 여성 차별</h2></div>
+        <figure class="ill"><svg viewBox="0 0 320 160" role="img" aria-label="교실 밖에 서 있는 여학생 그림">
+<rect class="p6" x="110" y="24" width="210" height="106"/><rect class="k5" x="104" y="18" width="216" height="8"/>
+<rect class="k2" x="150" y="50" width="96" height="50" rx="3"/>
+<circle class="k7" cx="172" cy="82" r="7"/><rect class="k5" x="164" y="90" width="16" height="10" rx="4"/>
+<circle class="k7" cx="198" cy="82" r="7"/><rect class="k5" x="190" y="90" width="16" height="10" rx="4"/>
+<circle class="k7" cx="224" cy="82" r="7"/><rect class="k5" x="216" y="90" width="16" height="10" rx="4"/>
+<rect class="k5" x="266" y="62" width="34" height="68" rx="2"/><circle class="p" cx="273" cy="98" r="2.5"/><rect class="k2" x="0" y="130" width="320" height="30"/>
+<circle class="k" cx="50" cy="80" r="5"/><circle class="k" cx="62" cy="74" r="10"/>
+<path class="k7" d="M62 86L46 124H78Z"/><rect class="k" x="55" y="124" width="4" height="9"/><rect class="k" x="65" y="124" width="4" height="9"/>
+        </svg><figcaption>교실 밖에 서 있는 여학생</figcaption></figure>
+        <p>지금 속도라면 여성과 소녀를 차별하는 법을 없애는 데 286년이 더 걸립니다. 2030년까지 조혼을 없애려면 지난 10년보다 17배 빠르게 나아가야 합니다. 관리자 가운데 여성은 3명 중 1명꼴이고, 여성이 국가나 정부의 수반인 나라는 27개국뿐입니다. 극심한 빈곤 속에 사는 여성과 소녀는 약 3억 8,300만 명으로 남성(약 3억 6,800만 명)보다 많습니다.</p>
+        <dl>
+          <div><dt>키워드</dt><dd>성평등 / 여성 차별</dd></div>
+          <div><dt>출처</dt><dd>UN Women·UN DESA, 「Progress on the Sustainable Development Goals: The Gender Snapshot 2022」</dd></div>
+        </dl>
+        <button class="close" type="button">덮기</button>
+      </div>
+    </article>
+
+    <article class="card" style="--c:var(--red);--on:var(--on-red)">
+      <button class="front" id="front-4" type="button" aria-label="카드 4 열기">4</button>
+      <div class="back" hidden>
+        <div class="back-head"><span class="num">4</span><h2>노키즈존 논란 (국내 사례)</h2></div>
+        <figure class="ill"><svg viewBox="0 0 320 160" role="img" aria-label="‘NO KIDS ZONE’ 안내문 그림">
+<rect class="p6" x="196" y="20" width="90" height="110" rx="4"/><rect class="k5" x="206" y="70" width="5" height="24" rx="2"/><rect class="k2" x="0" y="130" width="320" height="30"/>
+<rect class="p" x="40" y="18" width="124" height="120" rx="8"/>
+<circle class="k" cx="102" cy="56" r="7"/><rect class="k7" x="94" y="64" width="16" height="18" rx="6"/>
+<circle class="s" style="stroke-width:6" cx="102" cy="66" r="30"/><path class="s" style="stroke-width:6" d="M81 87L123 45"/>
+<text class="k" x="102" y="124" text-anchor="middle" font-size="13" font-weight="700" letter-spacing="1" font-family="Arial, sans-serif">NO KIDS ZONE</text>
+        </svg><figcaption>‘NO KIDS ZONE’ 안내문</figcaption></figure>
+        <p>한국에는 아동의 출입을 막는 식당과 카페, 이른바 노키즈존이 전국에 542곳 있는 것으로 조사되었습니다. 국가인권위원회는 2017년에 노키즈존이 합리적 이유 없는 아동 차별이라고 판단했지만, 이 결정에는 강제력이 없습니다. 업주들은 안전사고와 영업의 자유를 이유로 들고, 2023년 아동총회에서 어린이들은 노키즈존을 없애 달라고 요구했습니다.</p>
+        <dl>
+          <div><dt>키워드</dt><dd>노키즈존 / 아동 차별</dd></div>
+          <div><dt>출처</dt><dd>국가인권위원회 결정(2017), 제주연구원 「우리나라 노키즈존 현황과 쟁점」</dd></div>
+        </dl>
+        <button class="close" type="button">덮기</button>
+      </div>
+    </article>
+
+    <article class="card" style="--c:var(--orange);--on:var(--on-orange)">
+      <button class="front" id="front-5" type="button" aria-label="카드 5 열기">5</button>
+      <div class="back" hidden>
+        <div class="back-head"><span class="num">5</span><h2>기후난민 문제</h2></div>
+        <figure class="ill"><svg viewBox="0 0 320 160" role="img" aria-label="물에 잠긴 마을을 떠나는 가족들 그림">
+<rect class="k5" x="30" y="70" width="56" height="70"/><path class="k" d="M22 72L58 44L94 72Z"/>
+<rect class="k5" x="110" y="82" width="44" height="58"/><path class="k" d="M104 84L132 60L160 84Z"/>
+<path class="p6" d="M0 106q20-8 40 0t40 0t40 0t40 0t40 0t40 0t40 0t40 0V160H0Z"/>
+<circle class="k" cx="222" cy="92" r="8"/><rect class="k7" x="214" y="100" width="16" height="16" rx="6"/>
+<circle class="k" cx="246" cy="97" r="6"/><rect class="k7" x="240" y="103" width="12" height="13" rx="5"/>
+<circle class="k" cx="268" cy="90" r="8"/><rect class="k7" x="260" y="98" width="16" height="18" rx="6"/>
+<path class="k" d="M196 112H292L280 128H208Z"/>
+<path class="sp" d="M0 142q20-6 40 0t40 0t40 0t40 0t40 0t40 0t40 0t40 0"/>
+        </svg><figcaption>물에 잠긴 마을을 떠나는 가족들</figcaption></figure>
+        <p>2022년 한 해에 재해 때문에 살던 곳을 떠난 사례는 3,260만 건으로 역대 가장 많았고, 그중 98%가 홍수·폭풍·산불·가뭄 같은 기상 재해 때문이었습니다. 이들은 흔히 ‘기후난민’이라고 불리지만 이 말은 국제법에서 인정하는 용어가 아닙니다. 난민협약은 전쟁이나 박해를 피해 국경을 넘은 사람만 보호하는데, 기후 때문에 떠난 사람 대부분은 자기 나라 안에서 이동하기 때문입니다.</p>
+        <dl>
+          <div><dt>키워드</dt><dd>기후난민 / 환경권</dd></div>
+          <div><dt>출처</dt><dd>UNHCR, 「Climate change and displacement: the myths and the facts」 (2023), 수치는 국내이주감시센터(IDMC)</dd></div>
+        </dl>
+        <button class="close" type="button">덮기</button>
+      </div>
+    </article>
+
+    <article class="card" style="--c:var(--purple);--on:var(--on-purple)">
+      <button class="front" id="front-6" type="button" aria-label="카드 6 열기">6</button>
+      <div class="back" hidden>
+        <div class="back-head"><span class="num">6</span><h2>장애인 접근권</h2></div>
+        <figure class="ill"><svg viewBox="0 0 320 160" role="img" aria-label="계단 앞에서 멈춘 휠체어 사용자 그림">
+<rect class="k2" x="0" y="130" width="320" height="30"/><path class="k5" d="M150 130V112H180V94H210V76H240V58H320V130Z"/>
+<rect class="k" x="262" y="14" width="36" height="44" rx="2"/><circle class="p" cx="269" cy="38" r="2.5"/>
+<circle class="k" cx="76" cy="58" r="9"/><rect class="k7" x="68" y="68" width="16" height="30" rx="7"/>
+<rect class="k7" x="74" y="88" width="30" height="10" rx="5"/><rect class="k7" x="96" y="92" width="9" height="26" rx="4"/>
+<path class="s" d="M62 70V100H98"/><circle class="s" cx="76" cy="110" r="20"/><circle class="s" cx="110" cy="124" r="6"/>
+        </svg><figcaption>계단 앞에서 멈춘 휠체어 사용자</figcaption></figure>
+        <p>전 세계에서 약 13억 명, 인구 6명 중 1명(16%)이 장애를 경험하고 있습니다. 건물과 교통수단, 정보에 접근하기 어려운 환경은 장애인의 일상생활과 교육 참여를 가로막습니다. 그 결과 장애인은 교육과 일자리를 얻을 기회가 더 적고, 장애가 없는 사람보다 최대 20년 일찍 세상을 떠날 위험이 있습니다.</p>
+        <dl>
+          <div><dt>키워드</dt><dd>장애인 권리 / 접근권</dd></div>
+          <div><dt>출처</dt><dd>WHO·세계은행, 「World Report on Disability」 (2011) / WHO, 「Global Report on Health Equity for Persons with Disabilities」 (2022)</dd></div>
+        </dl>
+        <button class="close" type="button">덮기</button>
+      </div>
+    </article>
+
+  </main>
+
+  <footer>수치는 각 기관이 발표한 보고서를 요약한 것입니다. 2026년 10월에 확인했습니다.</footer>
+</div>
+
+<script>
+(function () {
+  var cards = Array.prototype.slice.call(document.querySelectorAll('.card'));
+  function setOpen(card, open, focus) {
+    var front = card.querySelector('.front'), back = card.querySelector('.back');
+    front.hidden = open; back.hidden = !open;
+    if (focus) (open ? back.querySelector('.close') : front).focus();
+  }
+  cards.forEach(function (card) {
+    card.querySelector('.front').addEventListener('click', function () { setOpen(card, true, true); });
+    card.querySelector('.close').addEventListener('click', function () { setOpen(card, false, true); });
+  });
+  document.getElementById('reset-all').addEventListener('click', function () {
+    cards.forEach(function (card) { setOpen(card, false, false); });
+  });
+})();
+</script>
+</body>
+</html>
